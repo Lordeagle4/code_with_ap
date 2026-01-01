@@ -88,7 +88,6 @@ class Router
                 return call_user_func($callableNormalized);
             }
 
-            // exact match fallback
             if (($route['path'] === $path) && ($route['method'] === strtoupper($method))) {
                 return call_user_func($route['handler']);
             }
