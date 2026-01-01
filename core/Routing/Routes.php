@@ -8,5 +8,6 @@ Router::add('GET', '/', function () {
 });
 
 Router::add('GET', '/about', function () {
-    echo 'This is the about page.';
+    $aboutController = new \Core\Controllers\About();
+    $aboutController->index();
 });
