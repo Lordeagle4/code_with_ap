@@ -15,7 +15,7 @@ class Router
         ];
     }
 
-    public function dispatch(string $method, string $path)
+    public static function dispatch(string $method, string $path)
     {
         $path = parse_url($path, PHP_URL_PATH) ?: '/';
         foreach (self::$routes as $route) {
