@@ -3,5 +3,10 @@
 use Core\Routing\Router;
 
 Router::add('GET', '/', function () {
-    echo 'Welcome to the home page!';
+    $homeController = new \Core\Controllers\Home();
+    $homeController->index();
+});
+
+Router::add('GET', '/about', function () {
+    echo 'This is the about page.';
 });

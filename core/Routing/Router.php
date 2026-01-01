@@ -4,12 +4,11 @@ namespace Core\Routing;
 
 class Router
 {
-    private array $routes = [];
+    private static array $routes = [];
 
     public static function add(string $method, string $path, callable $handler): void
     {
-        $instance = new self();
-        $instance->routes[] = [
+        self::$routes[] = [
             'method' => strtoupper($method),
             'path' => $path,
             'handler' => $handler,
@@ -18,7 +17,8 @@ class Router
 
     public function dispatch(string $method, string $path)
     {
-        foreach ($this->routes as $route) {
+        $path = parse_url($path, PHP_URL_PATH) ?: '/';
+        foreach (self::$routes as $route) {
             if ($route['method'] === strtoupper($method) && $route['path'] === $path) {
                 return call_user_func($route['handler']);
             }
