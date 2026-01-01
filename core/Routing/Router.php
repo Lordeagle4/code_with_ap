@@ -17,15 +17,35 @@ class Router
 
     public static function dispatch(string $method, string $path)
     {
-        $path = parse_url($path, PHP_URL_PATH) ?: '/';
+        self::loadRoutes();
+        $path = self::normalizePath($path);
+        self::handleRoute($method, $path) ?? self::notFound();
+    }
+
+    private static function normalizePath(string $path): string
+    {
+        return parse_url($path, PHP_URL_PATH) ?: '/';
+    }
+
+    private static function notFound(): void
+    {
+        http_response_code(404);
+        echo '404 Not Found';
+        exit;
+    }
+
+    private static function loadRoutes(): void
+    {
+        require __DIR__ . '/Routes.php';
+    }
+
+    private static function handleRoute(string $method, string $path)
+    {
         foreach (self::$routes as $route) {
             if ($route['method'] === strtoupper($method) && $route['path'] === $path) {
                 return call_user_func($route['handler']);
             }
         }
-
-        http_response_code(404);
-        echo '404 Not Found';
-        exit;
+        self::notFound();
     }
 }
